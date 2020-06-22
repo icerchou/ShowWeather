@@ -1,5 +1,5 @@
 <template>
-  <div class="outer">
+  <div id="building" class="outer">
 
       <!--左侧黑色框-->
       <div class="info_box">
@@ -57,10 +57,6 @@ export default {
       //接受近三天湿度
       humidity:[0,0,0]
     };
-  },
-  //设置背景色：
-  beforeCreate(){
-    document.querySelector('body').setAttribute('style','background:#FFFFE0')
   },
   created(){
     //新建网页时调用getInfo
@@ -193,6 +189,13 @@ export default {
 
 <style lang="less" scoped>
 
+#building{
+background:url("../assets/bg.jpg");
+width:100%;			//大小设置为100%
+height:100%;			//大小设置为100%
+position:absolute;
+background-size:100% 100%;}
+
 .outer {
   height: 100%;
   width: 100%;
@@ -209,7 +212,7 @@ export default {
   height: 400px;
   width: 380px;
   padding: 40px;
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(0, 0, 0, 0.589);
   box-sizing: border-box;
   box-shadow: 0 15px 25px rgba(0, 0, 0, 0.5);
   border-radius: 10px;
