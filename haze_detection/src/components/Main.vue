@@ -10,7 +10,7 @@
           <el-col :span="12">
           </el-col>
           <el-col :span="12">
-            <p class="City">城市： {{info.city}}</p>
+            <p class="City">所在城市： {{info.city}}</p>
           </el-col>
         </el-row>
 
@@ -18,7 +18,7 @@
           <el-col :span="12">
           </el-col>
           <el-col :span="12">
-            <p class="Weather">今日天气： {{info.weather}}</p>
+            <p class="Weather">今日天气： {{temperature_today}}℃ {{info.weather}}</p>
           </el-col>
         </el-row>
 
@@ -26,7 +26,7 @@
           <el-col :span="12">
           </el-col>
           <el-col :span="12">
-            <p class="Air">今日空气质量： {{info.air}}</p>
+            <p class="Air">今日空气质量指数： {{info.air}} {{info.air_level}}</p>
           </el-col>
         </el-row>
 
@@ -51,9 +51,11 @@ export default {
         city:'',//城市名
         weather:'',//天气
         air:'',//空气质量指数
+        air_level: ''
       },
       //接受近三天温度
       temperature:[0,0,0],
+      temperature_today : 0,
       //接受近三天湿度
       humidity:[0,0,0]
     };
@@ -74,6 +76,8 @@ export default {
       //获取当天空气指数 并赋值
       const { data: res0 } = await this.$axios.get('https://free-api.heweather.net/s6/air/now?location=auto_ip&key=f0cff9342d9345ce9d91d6136112680b');
       this.info.air=res0.HeWeather6[0].air_now_city.aqi;
+      this.info.air_level=res0.HeWeather6[0].air_now_city.qlty;
+      console.log(res0.HeWeather6[0]);
 
       //获取近3天 温度、湿度
       const { data: res1 } = await this.$axios.get('https://free-api.heweather.net/s6/weather/forecast?location=auto_ip&key=f0cff9342d9345ce9d91d6136112680b');
@@ -81,11 +85,13 @@ export default {
       this.temperature[0] = Number(res1.HeWeather6[0].daily_forecast[0].tmp_max);
       this.temperature[1] = Number(res1.HeWeather6[0].daily_forecast[1].tmp_max);
       this.temperature[2] = Number(res1.HeWeather6[0].daily_forecast[2].tmp_max);
-      console.log(this.temperature);
 
       this.humidity[0] = Number(res1.HeWeather6[0].daily_forecast[0].hum);
       this.humidity[1] = Number(res1.HeWeather6[0].daily_forecast[1].hum);
       this.humidity[2] = Number(res1.HeWeather6[0].daily_forecast[2].hum);
+
+      this.temperature_today = this.temperature[0];
+
       //调用绘制折线图函数：
       this.$nextTick(function() {
                 this.drawLine0('main0')
@@ -210,9 +216,9 @@ background-size:100% 100%;}
   transform: translate(-50%, -50%);
 
   height: 400px;
-  width: 380px;
+  width: 400px;
   padding: 40px;
-  background: rgba(0, 0, 0, 0.589);
+  background: rgba(0, 0, 0, 0.5);
   box-sizing: border-box;
   box-shadow: 0 15px 25px rgba(0, 0, 0, 0.5);
   border-radius: 10px;
@@ -227,29 +233,29 @@ background-size:100% 100%;}
 
 //城市样式
 .City {
-  font-size: xx-large;
+  font-size: x-large;
   font-weight: bolder;
   color: #409eff;
   text-align: center;
-  margin-bottom: 15px;
-  margin-top: 12px;
+  margin-bottom: 50px;
+  margin-top: 50px;
 }
 //天气样式
 .Weather {
-  font-size: xx-large;
+  font-size: x-large;
   font-weight: bolder;
   color: #d9e626;
   text-align: center;
-  margin-bottom: 15px;
+  margin-bottom: 50px;
   margin-top: 12px;
 }
 //空气指数样式
 .Air {
-  font-size: xx-large;
+  font-size: x-large;
   font-weight: bolder;
   color: #ff5d40;
   text-align: center;
-  margin-bottom: 15px;
+  margin-bottom: 50px;
   margin-top: 12px;
 }
 
