@@ -1,19 +1,16 @@
 <template>
   <div class="outer">
 
-    <div class="block">
-
-      <!--用来设置悬浮黑色框-->
+      <!--黑色框-->
       <div class="info_box">
         <!--标题-->
         <h2>雾霾探测系统（自动定位）</h2>
-        <!--表单区域-->
-
+        <!--数据区-->
         <el-row :gutter="5">
           <el-col :span="12">
           </el-col>
           <el-col :span="12">
-            <p class="count-fine">城市： {{city}}</p>
+            <p class="City">城市： {{info.city}}</p>
           </el-col>
         </el-row>
 
@@ -21,7 +18,7 @@
           <el-col :span="12">
           </el-col>
           <el-col :span="12">
-            <p class="count-returnPeriod">天气： {{weather}}</p>
+            <p class="Weather">今日天气： {{info.weather}}</p>
           </el-col>
         </el-row>
 
@@ -29,115 +26,206 @@
           <el-col :span="12">
           </el-col>
           <el-col :span="12">
-            <p class="count-depoist">空气质量： {{air}}</p>
+            <p class="Air">今日空气质量： {{info.air}}</p>
           </el-col>
         </el-row>
 
       </div>
-
-    </div>
+    <div id="main0" style="width: 460px;height: 400px;position: absolute;top: 50%;left: 45%;transform: translate(-50%, -50%);"></div>
+    <div id="main1" style="width: 460px;height: 400px;position: absolute;top: 50%;left: 80%;transform: translate(-50%, -50%);"></div>
     
   </div>
 </template>
 
 <script>
+import echarts from 'echarts'
 export default {
+  name: '',
   data() {
     return {
-      Key:{
-        appid:'67293484',
-        appsecret:'eieSox8k',
-        version:'v6'
-      },
+      charts: '',
+      opinionData: ["3", "2", "4", "4", "5"],
+      //info接收获取的天气信息（可拓展）
       info:{
-        cityid:'',
-        city:'',
-        weather:'',
-        air:''
-      }
+        city:'',//城市名
+        weather:'',//天气
+        air:'',//空气质量指数
+      },
+      //接受近三天温度
+      temperature:[0,0,0],
+      //接受近三天湿度
+      humidity:[0,0,0]
     };
   },
+
+  beforeCreate(){
+    document.querySelector('body').setAttribute('style','background:#FFFFE0')
+  },
   created(){
-      this.getInfo();
+    //新建网页时调用getInfo
+    this.getInfo();
   },
   methods:{
+    //定义异步函数getInfo 获取后端信息
     async getInfo () {
-      this.axios.get('https://free-api.heweather.net/s6/weather/now?location=beijing&key=f0cff9342d9345ce9d91d6136112680b')
-    }
+      //获取当天城市名和天气 并赋值
+      const { data: res } = await this.$axios.get('https://free-api.heweather.net/s6/weather/now?location=auto_ip&key=f0cff9342d9345ce9d91d6136112680b');
+      console.log(res.HeWeather6[0]);
+      this.info.city=res.HeWeather6[0].basic.parent_city;
+      this.info.weather=res.HeWeather6[0].now.cond_txt;
+
+      //获取当天空气指数 并赋值
+      const { data: res0 } = await this.$axios.get('https://free-api.heweather.net/s6/air/now?location=auto_ip&key=f0cff9342d9345ce9d91d6136112680b');
+      this.info.air=res0.HeWeather6[0].air_now_city.aqi;
+
+      //获取近3天 温度、湿度
+      const { data: res1 } = await this.$axios.get('https://free-api.heweather.net/s6/weather/forecast?location=auto_ip&key=f0cff9342d9345ce9d91d6136112680b');
+      console.log(res1.HeWeather6[0]);
+      this.temperature[0] = Number(res1.HeWeather6[0].daily_forecast[0].tmp_max);
+      this.temperature[1] = Number(res1.HeWeather6[0].daily_forecast[1].tmp_max);
+      this.temperature[2] = Number(res1.HeWeather6[0].daily_forecast[2].tmp_max);
+      console.log(this.temperature);
+
+      this.humidity[0] = Number(res1.HeWeather6[0].daily_forecast[0].hum);
+      this.humidity[1] = Number(res1.HeWeather6[0].daily_forecast[1].hum);
+      this.humidity[2] = Number(res1.HeWeather6[0].daily_forecast[2].hum);
+
+      this.$nextTick(function() {
+                this.drawLine0('main0')
+                this.drawLine1('main1')
+            })
+    },
+    //绘制温度变化图
+    drawLine0(id) {
+                this.charts = echarts.init(document.getElementById(id))
+                this.charts.setOption({
+                    title:{
+                      text:'近三日最高温度变化/℃'
+                    },
+                    tooltip: {
+                        trigger: 'axis'
+                    },
+                    legend: {
+                        data: ['近三日']
+                    },
+                    grid: {
+                        left: '3%',
+                        right: '4%',
+                        bottom: '3%',
+                        containLabel: true
+                    },
+
+                    toolbox: {
+                        feature: {
+                            saveAsImage: {}
+                        }
+                    },
+                    xAxis: {
+                        type: 'category',
+                        boundaryGap: false,
+                    data: ["今天","明天","后天"]
+                    
+                    },
+                    yAxis: {
+                        type: 'value'
+                    },
+
+                    series: [{
+                        name: '近三日最高温',
+                        type: 'line',
+                        stack: '总量',
+                        data: this.temperature
+                    }]
+                })
+            },
+    //绘制湿度变化图
+    drawLine1(id) {
+                this.charts = echarts.init(document.getElementById(id))
+                this.charts.setOption({
+                    title:{
+                      text:'近三日相对湿度变化/%'
+                    },
+                    tooltip: {
+                        trigger: 'axis'
+                    },
+                    legend: {
+                        data: ['近三日']
+                    },
+                    grid: {
+                        left: '3%',
+                        right: '4%',
+                        bottom: '3%',
+                        containLabel: true
+                    },
+
+                    toolbox: {
+                        feature: {
+                            saveAsImage: {}
+                        }
+                    },
+                    xAxis: {
+                        type: 'category',
+                        boundaryGap: false,
+                    data: ["今天","明天","后天"]
+                    
+                    },
+                    yAxis: {
+                        type: 'value'
+                    },
+
+                    series: [{
+                        name: '近三日湿度',
+                        type: 'line',
+                        stack: '总量',
+                        data: this.humidity,
+                        color: ['#58afed']
+                    }]
+                })
+            }
+
+
+
   }
 
 };
 </script>
 
 <style lang="less" scoped>
+
 .outer {
   height: 100%;
   width: 100%;
 }
 
 
-//带图片区域
-.block {
-  background-color: #2b4b6b;
-  /* background-size: 100% 100%; */
-  background-size: cover;
-  /* background-repeat: no-repeat; */
-  height: 100%;
-  width: 100%;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-}
+//背景
 
 //黑盒子
 .info_box {
   /*让盒子进行位移*/
-  // position: absolute;
   position: absolute;
   top: 50%;
-  left: 50%;
+  left: 14%;
   transform: translate(-50%, -50%);
 
-  height: 500px;
-  width: 400px;
+  height: 400px;
+  width: 380px;
   padding: 40px;
   background: rgba(0, 0, 0, 0.8);
   box-sizing: border-box;
   box-shadow: 0 15px 25px rgba(0, 0, 0, 0.5);
   border-radius: 10px;
 }
-
+//标题
 .info_box h2 {
-  //这个margin再说吧
   margin: 0 0 30px;
   padding: 0;
   text-align: center;
   color: #fff;
 }
 
-.el-tag {
-  height: 40px;
-  width: 100px;
-  font-size: larger;
-  font-weight: bold;
-  // text-align: center;
-  // align-content: center;
-  // align-items: center;
-  margin-bottom: 15px;
-  margin-top: 12px;
-}
 
-.el-row {
-  margin-bottom: 20px;
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-.el-col {
-  border-radius: 4px;
-}
-
-.count-fine {
+.City {
   font-size: xx-large;
   font-weight: bolder;
   color: #409eff;
@@ -146,7 +234,7 @@ export default {
   margin-top: 12px;
 }
 
-.count-depoist {
+.Weather {
   font-size: xx-large;
   font-weight: bolder;
   color: #d9e626;
@@ -155,7 +243,7 @@ export default {
   margin-top: 12px;
 }
 
-.count-returnPeriod {
+.Air {
   font-size: xx-large;
   font-weight: bolder;
   color: #ff5d40;
@@ -164,21 +252,4 @@ export default {
   margin-top: 12px;
 }
 
-.bg-purple-dark {
-  background: #99a9bf;
-}
-.bg-purple {
-  background: #d3dce6;
-}
-.bg-purple-light {
-  background: #e5e9f2;
-}
-.grid-content {
-  border-radius: 4px;
-  min-height: 36px;
-}
-.row-bg {
-  padding: 10px 0;
-  background-color: #f9fafc;
-}
 </style>
