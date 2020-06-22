@@ -132,7 +132,7 @@ export default {
                     },
 
                     series: [{
-                        name: '近三日最高温',
+                        name: '最高温度',
                         type: 'line',
                         stack: '总量',
                         data: this.temperature
@@ -175,7 +175,7 @@ export default {
                     },
 
                     series: [{
-                        name: '近三日湿度',
+                        name: '相对湿度',
                         type: 'line',
                         stack: '总量',
                         data: this.humidity,
