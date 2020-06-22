@@ -1,11 +1,11 @@
 <template>
   <div class="outer">
 
-      <!--黑色框-->
+      <!--左侧黑色框-->
       <div class="info_box">
-        <!--标题-->
+        <!--黑色框内的标题-->
         <h2>雾霾探测系统（自动定位）</h2>
-        <!--数据区-->
+        <!--数据区：包括城市 天气 空气质量-->
         <el-row :gutter="5">
           <el-col :span="12">
           </el-col>
@@ -31,6 +31,7 @@
         </el-row>
 
       </div>
+    <!--设置两个折线图的位置和大小-->
     <div id="main0" style="width: 460px;height: 400px;position: absolute;top: 50%;left: 45%;transform: translate(-50%, -50%);"></div>
     <div id="main1" style="width: 460px;height: 400px;position: absolute;top: 50%;left: 80%;transform: translate(-50%, -50%);"></div>
     
@@ -38,14 +39,14 @@
 </template>
 
 <script>
+//导入echarts组件 用来绘制折线图
 import echarts from 'echarts'
 export default {
   name: '',
   data() {
     return {
       charts: '',
-      opinionData: ["3", "2", "4", "4", "5"],
-      //info接收获取的天气信息（可拓展）
+      //info：接收获取的天气信息（可拓展）
       info:{
         city:'',//城市名
         weather:'',//天气
@@ -57,7 +58,7 @@ export default {
       humidity:[0,0,0]
     };
   },
-
+  //设置背景色：
   beforeCreate(){
     document.querySelector('body').setAttribute('style','background:#FFFFE0')
   },
@@ -89,7 +90,7 @@ export default {
       this.humidity[0] = Number(res1.HeWeather6[0].daily_forecast[0].hum);
       this.humidity[1] = Number(res1.HeWeather6[0].daily_forecast[1].hum);
       this.humidity[2] = Number(res1.HeWeather6[0].daily_forecast[2].hum);
-
+      //调用绘制折线图函数：
       this.$nextTick(function() {
                 this.drawLine0('main0')
                 this.drawLine1('main1')
@@ -197,9 +198,6 @@ export default {
   width: 100%;
 }
 
-
-//背景
-
 //黑盒子
 .info_box {
   /*让盒子进行位移*/
@@ -224,7 +222,7 @@ export default {
   color: #fff;
 }
 
-
+//城市样式
 .City {
   font-size: xx-large;
   font-weight: bolder;
@@ -233,7 +231,7 @@ export default {
   margin-bottom: 15px;
   margin-top: 12px;
 }
-
+//天气样式
 .Weather {
   font-size: xx-large;
   font-weight: bolder;
@@ -242,7 +240,7 @@ export default {
   margin-bottom: 15px;
   margin-top: 12px;
 }
-
+//空气指数样式
 .Air {
   font-size: xx-large;
   font-weight: bolder;
