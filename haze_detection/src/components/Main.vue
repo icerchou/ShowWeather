@@ -195,68 +195,68 @@ export default {
 
 <style lang="less" scoped>
 
-#building{
-background:url("../assets/bg.jpg");
-width:100%;			//大小设置为100%
-height:100%;			//大小设置为100%
-position:absolute;
-background-size:100% 100%;}
+  #building{
+  background:url("../assets/11.jpg");
+  width:100%;			//大小设置为100%
+  height:100%;			//大小设置为100%
+  position:absolute;
+  background-size:100% 100%;}
 
-.outer {
-  height: 100%;
-  width: 100%;
-}
+  .outer {
+    height: 100%;
+    width: 100%;
+  }
 
-//黑盒子
-.info_box {
-  /*让盒子进行位移*/
-  position: absolute;
-  top: 50%;
-  left: 14%;
-  transform: translate(-50%, -50%);
+  //黑盒子
+  .info_box {
+    /*让盒子进行位移*/
+    position: absolute;
+    top: 50%;
+    left: 14%;
+    transform: translate(-50%, -50%);
 
-  height: 400px;
-  width: 400px;
-  padding: 40px;
-  background: rgba(0, 0, 0, 0.5);
-  box-sizing: border-box;
-  box-shadow: 0 15px 25px rgba(0, 0, 0, 0.5);
-  border-radius: 10px;
-}
-//标题
-.info_box h2 {
-  margin: 0 0 30px;
-  padding: 0;
-  text-align: center;
-  color: #fff;
-}
+    height: 400px;
+    width: 400px;
+    padding: 40px;
+    background: rgba(0, 0, 0, 0.5);
+    box-sizing: border-box;
+    box-shadow: 0 15px 25px rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+  }
+  //标题
+  .info_box h2 {
+    margin: 0 0 30px;
+    padding: 0;
+    text-align: center;
+    color: #fff;
+  }
 
-//城市样式
-.City {
-  font-size: x-large;
-  font-weight: bolder;
-  color: #409eff;
-  text-align: center;
-  margin-bottom: 50px;
-  margin-top: 50px;
-}
-//天气样式
-.Weather {
-  font-size: x-large;
-  font-weight: bolder;
-  color: #d9e626;
-  text-align: center;
-  margin-bottom: 50px;
-  margin-top: 12px;
-}
-//空气指数样式
-.Air {
-  font-size: x-large;
-  font-weight: bolder;
-  color: #ff5d40;
-  text-align: center;
-  margin-bottom: 50px;
-  margin-top: 12px;
-}
+  //城市样式
+  .City {
+    font-size: x-large;
+    font-weight: bolder;
+    color: #409eff;
+    text-align: center;
+    margin-bottom: 50px;
+    margin-top: 50px;
+  }
+  //天气样式
+  .Weather {
+    font-size: x-large;
+    font-weight: bolder;
+    color: #d9e626;
+    text-align: center;
+    margin-bottom: 50px;
+    margin-top: 12px;
+  }
+  //空气指数样式
+  .Air {
+    font-size: x-large;
+    font-weight: bolder;
+    color: #ff5d40;
+    text-align: center;
+    margin-bottom: 50px;
+    margin-top: 12px;
+  }
 
 </style>
