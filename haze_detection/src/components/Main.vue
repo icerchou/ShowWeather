@@ -205,6 +205,7 @@ export default {
   .outer {
     height: 100%;
     width: 100%;
+    min-width: 1440px;
   }
 
   //黑盒子
