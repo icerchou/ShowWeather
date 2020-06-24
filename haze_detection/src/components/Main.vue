@@ -1,36 +1,36 @@
 <template>
   <div id="building" class="outer">
 
-      <!--左侧黑色框-->
-      <div class="info_box">
-        <!--黑色框内的标题-->
-        <h2>雾霾探测系统（自动定位）</h2>
-        <!--数据区：包括城市 天气 空气质量-->
-        <el-row :gutter="5">
-          <el-col :span="12">
-          </el-col>
-          <el-col :span="12">
-            <p class="City">所在城市： {{info.city}}</p>
-          </el-col>
-        </el-row>
+    <!--左侧黑色框-->
+    <div class="info_box">
+      <!--黑色框内的标题-->
+      <h2>雾霾探测系统（自动定位）</h2>
+      <!--数据区：包括城市 天气 空气质量-->
+      <el-row :gutter="5">
+        <el-col :span="12">
+        </el-col>
+        <el-col :span="12">
+          <p class="City">所在城市： {{info.city}}</p>
+        </el-col>
+      </el-row>
 
-        <el-row :gutter="5">
-          <el-col :span="12">
-          </el-col>
-          <el-col :span="12">
-            <p class="Weather">今日天气： {{temperature_today}}℃ {{info.weather}}</p>
-          </el-col>
-        </el-row>
+      <el-row :gutter="5">
+        <el-col :span="12">
+        </el-col>
+        <el-col :span="12">
+          <p class="Weather">今日天气： {{temperature_today}}℃ {{info.weather}}</p>
+        </el-col>
+      </el-row>
 
-        <el-row :gutter="5">
-          <el-col :span="12">
-          </el-col>
-          <el-col :span="12">
-            <p class="Air">今日空气质量指数： {{info.air}} {{info.air_level}}</p>
-          </el-col>
-        </el-row>
+      <el-row :gutter="5">
+        <el-col :span="12">
+        </el-col>
+        <el-col :span="12">
+          <p class="Air">今日空气质量指数： {{info.air}} {{info.air_level}}</p>
+        </el-col>
+      </el-row>
 
-      </div>
+    </div>
     <!--设置两个折线图的位置和大小-->
     <div id="main0" style="width: 460px;height: 400px;position: absolute;top: 50%;left: 45%;transform: translate(-50%, -50%);"></div>
     <div id="main1" style="width: 460px;height: 400px;position: absolute;top: 50%;left: 80%;transform: translate(-50%, -50%);"></div>
@@ -94,97 +94,97 @@ export default {
 
       //调用绘制折线图函数：
       this.$nextTick(function() {
-                this.drawLine0('main0')
-                this.drawLine1('main1')
-            })
+        this.drawLine0('main0')
+        this.drawLine1('main1')
+      })
     },
     //绘制温度变化图
     drawLine0(id) {
-                this.charts = echarts.init(document.getElementById(id))
-                this.charts.setOption({
-                    title:{
-                      text:'近三日最高温度变化/℃'
-                    },
-                    tooltip: {
-                        trigger: 'axis'
-                    },
-                    legend: {
-                        data: ['近三日']
-                    },
-                    grid: {
-                        left: '3%',
-                        right: '4%',
-                        bottom: '3%',
-                        containLabel: true
-                    },
+      this.charts = echarts.init(document.getElementById(id))
+      this.charts.setOption({
+        title:{
+          text:'近三日最高温度变化/℃'
+        },
+        tooltip: {
+          trigger: 'axis'
+        },
+        legend: {
+          data: ['近三日']
+        },
+        grid: {
+          left: '3%',
+          right: '4%',
+          bottom: '3%',
+          containLabel: true
+        },
 
-                    toolbox: {
-                        feature: {
-                            saveAsImage: {}
-                        }
-                    },
-                    xAxis: {
-                        type: 'category',
-                        boundaryGap: false,
-                    data: ["今天","明天","后天"]
-                    
-                    },
-                    yAxis: {
-                        type: 'value'
-                    },
+        toolbox: {
+          feature: {
+            saveAsImage: {}
+          }
+        },
+        xAxis: {
+          type: 'category',
+          boundaryGap: false,
+        data: ["今天","明天","后天"]
+        
+        },
+        yAxis: {
+          type: 'value'
+        },
 
-                    series: [{
-                        name: '最高温度',
-                        type: 'line',
-                        stack: '总量',
-                        data: this.temperature
-                    }]
-                })
-            },
+        series: [{
+          name: '最高温度',
+          type: 'line',
+          stack: '总量',
+          data: this.temperature
+        }]
+      })
+    },
     //绘制湿度变化图
     drawLine1(id) {
-                this.charts = echarts.init(document.getElementById(id))
-                this.charts.setOption({
-                    title:{
-                      text:'近三日相对湿度变化/%'
-                    },
-                    tooltip: {
-                        trigger: 'axis'
-                    },
-                    legend: {
-                        data: ['近三日']
-                    },
-                    grid: {
-                        left: '3%',
-                        right: '4%',
-                        bottom: '3%',
-                        containLabel: true
-                    },
+      this.charts = echarts.init(document.getElementById(id))
+      this.charts.setOption({
+        title:{
+          text:'近三日相对湿度变化/%'
+        },
+        tooltip: {
+          trigger: 'axis'
+        },
+        legend: {
+          data: ['近三日']
+        },
+        grid: {
+          left: '3%',
+          right: '4%',
+          bottom: '3%',
+          containLabel: true
+        },
 
-                    toolbox: {
-                        feature: {
-                            saveAsImage: {}
-                        }
-                    },
-                    xAxis: {
-                        type: 'category',
-                        boundaryGap: false,
-                    data: ["今天","明天","后天"]
-                    
-                    },
-                    yAxis: {
-                        type: 'value'
-                    },
+        toolbox: {
+          feature: {
+            saveAsImage: {}
+          }
+        },
+        xAxis: {
+          type: 'category',
+          boundaryGap: false,
+        data: ["今天","明天","后天"]
+        
+        },
+        yAxis: {
+          type: 'value'
+        },
 
-                    series: [{
-                        name: '相对湿度',
-                        type: 'line',
-                        stack: '总量',
-                        data: this.humidity,
-                        color: ['#58afed']
-                    }]
-                })
-            }
+        series: [{
+          name: '相对湿度',
+          type: 'line',
+          stack: '总量',
+          data: this.humidity,
+          color: ['#58afed']
+        }]
+      })
+    }
 
 
 
