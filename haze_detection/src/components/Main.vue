@@ -32,8 +32,8 @@
 
     </div>
     <!--设置两个折线图的位置和大小-->
-    <div id="main0" style="width: 460px;height: 400px;position: absolute;top: 50%;left: 45%;transform: translate(-50%, -50%);"></div>
-    <div id="main1" style="width: 460px;height: 400px;position: absolute;top: 50%;left: 80%;transform: translate(-50%, -50%);"></div>
+    <div id="main0" style="width: 400px;height: 400px;position: absolute;top: 50%;left: 48%;transform: translate(-50%, -50%);"></div>
+    <div id="main1" style="width: 400px;height: 400px;position: absolute;top: 50%;left: 80%;transform: translate(-50%, -50%);"></div>
     
   </div>
 </template>
@@ -206,6 +206,7 @@ export default {
     height: 100%;
     width: 100%;
     min-width: 1440px;
+    min-height: 790px;
   }
 
   //黑盒子
